@@ -1,0 +1,9 @@
+Write a PowerShell 7 Core script that lists installed WSL distributions in a nicely formatted table, including:
+
+- The distribution name, listed under the heading "Distribution Name"
+- The distribution's default UID, by reading the default UiD key, listed under the heading "Default UID"
+- The distribution's default username, by spawning a process in that respective distribution, running "id -un -- " followed by the default UID key in the respective WSL distribution, and parsing the output, under the heading "Default User"
+- The distribution's state, by reading the State key, and listing "Installed" for a value of 0x1, "Installing" for a value of 0x3, or "Uninstalling", for a value of 0x4, under the heading "State"
+- The distribution's WSL version as 1 or 2, by reading the Version key, listed under the heading "Version"
+
+Do not check for, display the default username, or default username header if the optional flag --skip-username is passed to the script.
