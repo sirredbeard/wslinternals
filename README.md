@@ -15,3 +15,5 @@ wslctl enable pengwin
 wslctl disable pengwin
 wslctl restart pengwin
 ```
+
+/prompts contains example AI prompts used to generate the first draft of these scripts, the final scripts got hand polished, but they are there to see

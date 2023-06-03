@@ -7,7 +7,6 @@ The table should show:
 - The distribution PRETTY_NAME, by spawning a process in that respective distribution and reading the distribution's /etc/os-release file for PRETTY_NAME, listed under the heading "Linux Distro Name"
 - The distribution's version, by spawning a process in that respective distribution and reading the distribution's /etc/os-release file for VERSION, listed under the heading "Distro Version"
 - Whether the distribution has systemd enabled or not, by spawning a process in that respective distribution and reading /etc/wsl.conf for the systemd=true key, listed under the heading "systemd"
-- The distribution's default UID, by reading the default UiD key in the Windows Registry, listed under the heading "Default UID"
 - The distribution's default username, by spawning a process in that respective distribution, running "id -un -- " followed by the default UID key in the respective WSL distribution, and parsing the output, under the heading "Default User"
 - The distribution's state, by reading the State key in the Windows Registry, and listing "Installed" for a value of 0x1, "Installing" for a value of 0x3, or "Uninstalling", for a value of 0x4, under the heading "State"
 - The distribution's WSL version as 1 or 2, by reading the Version key in the Windows Registry, listed under the heading "WSL Version"
