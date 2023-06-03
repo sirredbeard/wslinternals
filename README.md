@@ -1,6 +1,6 @@
 # A collection of some nifty WSL-related utilities
 
-![Screenshot 2023-06-02 194607](https://github.com/sirredbeard/wslinternals/assets/33820650/7107bb48-eac8-4517-9cc5-1b579f20c5da)
+![Screenshot 2023-06-02 194607](https://github.com/sirredbeard/wslinternals/assets/33820650/419c5854-bb69-4d95-8f1f-6e8f0b8ac6b0)
 
 ## list-wsl
 
