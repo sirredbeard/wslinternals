@@ -4,17 +4,18 @@ $wslDistributions = Get-ChildItem -Path "HKCU:\SOFTWARE\Microsoft\Windows\Curren
     $distribution = @{}
     $distribution["Name"] = $_.GetValue("DistributionName")
 
-    if ($distribution["Name"] -eq "docker-desktop") { $distribution["Linux Distro"] = "Docker Desktop"; $distribution["State"] = "Installed" }
-    if ($distribution["Name"] -eq "docker-desktop-data") { $distribution["Linux Distro"] = "Docker Desktop Data"; $distribution["State"] = "Installed" }
+    if ($distribution["Name"] -eq "docker-desktop") { $distribution["Linux Distro"] = "Docker Desktop"; $distribution["State"] = "Installed"; $distribution["WSL"] = 2; $distribution["systemd"] = "Disabled"; $distribution["Default User"] = ""; $distribution["Distro Version"] = "" }
+    if ($distribution["Name"] -eq "docker-desktop-data") { $distribution["Linux Distro"] = "Docker Desktop Data"; $distribution["State"] = "Installed"; $distribution["WSL"] = 2; $distribution["systemd"] = "Disabled"; $distribution["Default User"] = ""; $distribution["Distro Version"] = "" }
+    if ($distribution["Name"] -eq "docker-desktop-runtime") { $distribution["Linux Distro"] = "Docker Desktop Runtime"; $distribution["State"] = "Installed"; $distribution["WSL"] = 2; $distribution["systemd"] = "Disabled"; $distribution["Default User"] = ""; $distribution["Distro Version"] = "" }
 
     if ($distribution["Name"] -ne "docker-desktop" -and $distribution["Name"] -ne "docker-desktop-data" -and $distribution["Name"] -ne "docker-desktop-runtime") {
         $osRelease = Invoke-Expression "wsl.exe -d $($distribution["Name"]) cat /etc/os-release"
         if ($osRelease) {
             $distribution["Linux Distro"] = ($osRelease | Where-Object { $_ -like "PRETTY_NAME=*" }).Split("=")[1].Replace('"', '')
-            $distribution["Distro Version"] = ($osRelease | Where-Object { $_ -like "VERSION=*" }).Split("=")[1].Replace('"', '')
+            $distribution["Distro Version"] = ($osRelease | Where-Object { $_ -like "*VERSION=*" }).Split("=")[1].Replace('"', '')
         }
 
-        $wslConf = Invoke-Expression "wsl.exe -d $($distribution["Name"]) cat /etc/wsl.conf"
+        $wslConf = Invoke-Expression "wsl.exe -d $($distribution["Name"]) cat /etc/wsl.conf 2> `$null"
         if ($wslConf -and $wslConf.Contains("systemd=true")) {
             $distribution["systemd"] = "Enabled"
         } else {
