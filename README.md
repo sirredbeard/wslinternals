@@ -21,13 +21,15 @@ wslctl restart pengwin
 A troubleshooting utility that resets WSL to various degrees.
 
 `wsl-reset --reset` - shuts down WSL, resets the WSL service, and installs any WSL updates, if available
+
 `wsl-reset --hard-reset` - shuts down WSL, stops the WSL service, uninstalls WSL, and re-installs WSL
+
 `wsl-reset --destrutive-reset` - shuts down WSL, restarts the WSL service, **unregisters all WSL distros**, stops the WSL service, uninstalls WSL, and re-installs WSL
 
 ## sysdistrowt
 
 Adds the WSL System Distro (CBL-Mariner) to the Windows Terminal and/or Windows Terminal Preview profiles, for easier debugging.
 
-### /prompts folder
+### Misc
 
-Contains example AI prompts used to generate the first draft of these scripts, the final scripts got hand polished, but they are there to see.
+ /prompts folder contains example AI prompts used to generate the first draft of these scripts, the final scripts got hand polished, but they are there to see.
