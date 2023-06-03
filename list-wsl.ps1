@@ -1,43 +1,50 @@
-$skipUsername = $false
-if ($args -contains "--skip-username") {
-    $skipUsername = $true
-}
+$defaultGuid = (Get-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Lxss").DefaultDistribution
 
-$wslRegPath = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Lxss"
-$wslRegKeys = Get-ChildItem $wslRegPath
-
-$table = @()
-foreach ($key in $wslRegKeys) {
-    $distroName = (Get-ItemProperty -Path $key.PSPath -Name DistributionName).DistributionName
-    $defaultUid = (Get-ItemProperty -Path $key.PSPath -Name DefaultUid).DefaultUid
-    $state = (Get-ItemProperty -Path $key.PSPath -Name State).State
-    $version = (Get-ItemProperty -Path $key.PSPath -Name Version).Version
-
-    if ($skipUsername) {
-        $table += [pscustomobject]@{
-            "Distribution Name" = $distroName
-            "Default UID" = $defaultUid
-            "State" = switch ($state) {
-                0x1 { "Installed" }
-                0x3 { "Installing" }
-                0x4 { "Uninstalling" }
-            }
-            "Version" = $version
-        }
-    } else {
-        $defaultUser = Invoke-Command -ScriptBlock { wsl.exe -d $args[0] -- id -un -- $args[1] } -ArgumentList $distroName, $defaultUid -ErrorAction SilentlyContinue
-        $table += [pscustomobject]@{
-            "Distribution Name" = $distroName
-            "Default UID" = $defaultUid
-            "Default User" = $defaultUser
-            "State" = switch ($state) {
-                0x1 { "Installed" }
-                0x3 { "Installing" }
-                0x4 { "Uninstalling" }
-            }
-            "Version" = $version
-        }
+$wslDistributions = Get-ChildItem -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Lxss" | ForEach-Object {
+    $distribution = @{
+        Name = ""
+        "Linux Distro" = ""
+        "Distro Version" = ""
+        systemd = ""
+        "Default User" = ""
+        State = ""
+        WSL = ""
     }
+
+    $distribution["Name"] = $_.GetValue("DistributionName")
+
+    $osRelease = Invoke-Expression "wsl.exe -d $($distribution["Name"]) cat /etc/os-release"
+    if ($osRelease) {
+        $distribution["Linux Distro"] = ($osRelease | Where-Object { $_ -like "PRETTY_NAME=*" }).Split("=")[1].Replace('"', '')
+        $distribution["Distro Version"] = ($osRelease | Where-Object { $_ -like "VERSION=*" }).Split("=")[1].Replace('"', '')
+    }
+
+    $wslConf = Invoke-Expression "wsl.exe -d $($distribution["Name"]) cat /etc/wsl.conf"
+    if ($wslConf) {
+        $distribution["systemd"] = ($wslConf | Where-Object { $_ -like "systemd=true" }).Count -gt 0
+    }
+
+    $distribution["DefaultUid"] = $_.GetValue("DefaultUid")
+
+    $username = Invoke-Command -ScriptBlock { wsl.exe -d $($distribution["Name"]) -- id -un -- $args[0] } -ArgumentList $distribution["DefaultUid"] -ErrorAction SilentlyContinue
+    if ($username) {
+        $distribution["Default User"] = $username
+    }
+
+    $distribution["State"] = $_.GetValue("State")
+    switch ($distribution["State"]) {
+        0x1 { $distribution["State"] = "Installed" }
+        0x3 { $distribution["State"] = "Installing" }
+        0x4 { $distribution["State"] = "Uninstalling" }
+    }
+
+    $distribution["WSL"] = $_.GetValue("Version")
+
+    if ($defaultGuid -eq $_.PSChildName) {
+        $distribution["Name"] += "*"
+    }
+
+    New-Object -TypeName PSObject -Property $distribution
 }
 
-$table | Format-Table -AutoSize
+$wslDistributions | Format-Table -AutoSize "Name", "Linux Distro", "Distro Version", "Default User", systemd, State, WSL

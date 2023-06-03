@@ -4,7 +4,7 @@
 
 ## list-wsl
 
-Provides a list of installed distributions, the default user, current state, and WSL version.
+Provides a list of installed distributions, the official Linux distro name, the Linux distro version, the default user, systemd status, current state, and WSL version.
 
 ## wslctl
 
