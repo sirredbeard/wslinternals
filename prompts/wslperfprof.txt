@@ -1,0 +1,21 @@
+Write a PowerShell 7 Core script that:
+
+- Accepts arguments: --minimal, --medium, --standard, --maximal
+
+- Updates %USERPROFILE%/.wslconfig based on argument passed.
+
+- If %USERPROFILE%/.wslconfig does not exist, then create the file.
+
+- If settings already exist in %USERPROFILE%/.wslconfig, overwrite them.
+
+- If no argument is passed, the current number of memory and CPU cores allocated to WSL2 is printed and then list the available arguments.
+
+- When argument --minimal is passed, under [wsl2] set memory= to 20% of the total Windows memory, rounded down to the nearest GB, with a minimum of 1GB, and set processors= to 20% of the total available logical cores rounded down to an whole integer, with a minimum of 1 core
+
+- When argument --medium is passed, under [wsl2] set memory= to 40% of the total Windows memory, rounded down to the nearest GB, with a minimum of 2GB, and set processors= to 40% of the total available logical cores rounded down to an whole integer, with a minimum of 2 cores
+
+- When argument --standard is passed, under [wsl2] do not set any settings for memory= or cpu= and allow the system defaults
+
+- When argument --maximum is passed, under [wsl2] set memory= to 90% of the total Windows memory, rounded down to the nearest GB, with a minimum of 4GB, and set processors= to the same total available logical cores
+
+
