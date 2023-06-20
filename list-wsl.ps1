@@ -3,12 +3,26 @@ $defaultGuid = (Get-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\Current
 $wslDistributions = Get-ChildItem -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Lxss" | ForEach-Object {
     $distribution = @{}
     $distribution["Name"] = $_.GetValue("DistributionName")
+    $distribution["State"] = "Installed"
+    $distribution["WSL"] = 2
+    $distribution["systemd"] = "Disabled"
+    $distribution["Default User"] = ""
+    $distribution["Distro Version"] = ""
+    $distribution["Linux Distro"] = ""
 
-    if ($distribution["Name"] -eq "docker-desktop") { $distribution["Linux Distro"] = "Docker Desktop"; $distribution["State"] = "Installed"; $distribution["WSL"] = 2; $distribution["systemd"] = "Disabled"; $distribution["Default User"] = ""; $distribution["Distro Version"] = "" }
-    if ($distribution["Name"] -eq "docker-desktop-data") { $distribution["Linux Distro"] = "Docker Desktop Data"; $distribution["State"] = "Installed"; $distribution["WSL"] = 2; $distribution["systemd"] = "Disabled"; $distribution["Default User"] = ""; $distribution["Distro Version"] = "" }
-    if ($distribution["Name"] -eq "docker-desktop-runtime") { $distribution["Linux Distro"] = "Docker Desktop Runtime"; $distribution["State"] = "Installed"; $distribution["WSL"] = 2; $distribution["systemd"] = "Disabled"; $distribution["Default User"] = ""; $distribution["Distro Version"] = "" }
-    if ($distribution["Name"] -eq "rancher-desktop") { $distribution["Linux Distro"] = "Rancher Desktop WSL Distribution"; $distribution["State"] = "Installed"; $distribution["WSL"] = 2; $distribution["systemd"] = "Disabled"; $distribution["Default User"] = ""; $distribution["Distro Version"] = "" }
-    if ($distribution["Name"] -eq "rancher-desktop-data") { $distribution["Linux Distro"] = "Rancher Desktop Data"; $distribution["State"] = "Installed"; $distribution["WSL"] = 2; $distribution["systemd"] = "Disabled"; $distribution["Default User"] = ""; $distribution["Distro Version"] = "" }
+    if ($distribution["Name"] -eq "docker-desktop") {
+        $distribution["Linux Distro"] = "Docker Desktop"
+    } elseif ($distribution["Name"] -eq "docker-desktop-data") {
+        $distribution["Linux Distro"] = "Docker Desktop Data"
+    } elseif ($distribution["Name"] -eq "docker-desktop-runtime") {
+        $distribution["Linux Distro"] = "Docker Desktop Runtime"
+    } elseif ($distribution["Name"] -eq "rancher-desktop") {
+        $distribution["Linux Distro"] = "Rancher Desktop WSL Distribution"
+    } elseif ($distribution["Name"] -eq "rancher-desktop-data") {
+        $distribution["Linux Distro"] = "Rancher Desktop Data"
+    } else {
+        $distribution["State"] = ""
+    }
 
     if ($distribution["Name"] -ne "docker-desktop" -and $distribution["Name"] -ne "docker-desktop-data" -and $distribution["Name"] -ne "docker-desktop-runtime" -and $distribution["Name"] -ne "rancher-desktop" -and $distribution["Name"] -ne "rancher-desktop-data") {
         $osRelease = Invoke-Expression "wsl.exe -d $($distribution["Name"]) cat /etc/os-release"

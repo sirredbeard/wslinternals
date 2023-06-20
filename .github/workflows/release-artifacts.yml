@@ -1,0 +1,61 @@
+name: Release Artifacts
+
+on:
+  push:
+    tags:
+      - "v*"
+
+defaults:
+  run:
+    shell: powershell
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions: write-all
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Convert tag to version
+        id: convert_tag
+        run: |
+          $version = "${{ github.ref }}"
+          $version = $version -replace '^refs/tags/v', ''
+          echo "version=$version" >> "$env:GITHUB_ENV"
+          echo "version=$version"
+
+      - name: Set up PowerShell
+        run: |
+          Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+
+      - name: Install ps2exe module
+        run: |
+          Install-Module -Name ps2exe -Scope CurrentUser -Force
+
+      - name: Compile and release scripts
+        run: |
+          echo "Compile version ${{ env.version }}"
+          Get-ChildItem -Path . -Filter *.ps1 -Recurse | ForEach-Object {
+            Invoke-ps2exe -inputFile $_.Name -version ${{ env.version }}
+          }
+
+      - name: Create Release
+        run: |
+          gh release create v${{ env.version }} -t v${{ env.version }} -n "Release v${{ env.version }}" --draft=false --prerelease=false
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload executable files
+        run: |
+          Get-ChildItem -Path . -Filter *.exe -Recurse | ForEach-Object {
+            $fileName = $_.Name
+            $hash = Get-FileHash -Path $_.Name -Algorithm SHA256
+            $hashLine = "$($hash.Hash.ToLower())  $fileName"
+            Add-Content -Path "SHA2-256SUMS" -Value $hashLine
+            gh release upload v${{ env.version }} $fileName --clobber
+          }
+          gh release upload v${{ env.version }} SHA2-256SUMS --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
