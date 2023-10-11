@@ -46,7 +46,7 @@ jobs:
 
       - name: Upload executable files
         run: |
-          Get-ChildItem -Path . -Filter '*.exe,*.zip' -Recurse | ForEach-Object {
+          Get-ChildItem -Path . -Filter *.exe -Recurse | ForEach-Object {
             $fileName = $_.Name
             $hash = Get-FileHash -Path $_.Name -Algorithm SHA256
             $hashLine = "$($hash.Hash.ToLower())  $fileName"
@@ -56,3 +56,16 @@ jobs:
           gh release upload ${{ env.version }} SHA2-256SUMS --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload zip file
+        run: |
+            Get-ChildItem -Path . -Filter *.zip -Recurse | ForEach-Object {
+              $fileName = $_.Name
+              $hash = Get-FileHash -Path $_.Name -Algorithm SHA256
+              $hashLine = "$($hash.Hash.ToLower())  $fileName"
+              Add-Content -Path "SHA2-256SUMS" -Value $hashLine
+              gh release upload ${{ env.version }} $fileName --clobber
+            }
+            gh release upload ${{ env.version }} SHA2-256SUMS --clobber
+        env:
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
