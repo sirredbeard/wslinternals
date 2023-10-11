@@ -1,9 +1,8 @@
 name: Release Artifacts
 
 on:
-  push:
-    tags:
-      - "v*"
+  release:
+    types: [created]
 
 defaults:
   run:
@@ -16,13 +15,13 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Convert tag to version
         id: convert_tag
         run: |
           $version = "${{ github.ref }}"
-          $version = $version -replace '^refs/tags/v', ''
+          $version = $version.Replace('refs/tags/', '')
           echo "version=$version" >> "$env:GITHUB_ENV"
           echo "version=$version"
 
@@ -37,25 +36,23 @@ jobs:
       - name: Compile and release scripts
         run: |
           echo "Compile version ${{ env.version }}"
-          Get-ChildItem -Path . -Filter *.ps1 -Recurse | ForEach-Object {
-            Invoke-ps2exe -inputFile $_.Name -version ${{ env.version }}
+          Get-ChildItem -Path . -Filter '*.ps1' -Recurse -Exclude build-wslinternals.ps1,wsl-dist-update-sched.ps1 | ForEach-Object {
+            Invoke-ps2exe -inputFile $_.Name -verbose
           }
 
-      - name: Create Release
+      - name: Create archive
         run: |
-          gh release create v${{ env.version }} -t v${{ env.version }} -n "Release v${{ env.version }}" --draft=false --prerelease=false
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          Compress-Archive -Path .\*.exe, .\wsl-dist-update-sched.ps1 -DestinationPath "${{ env.version }}.zip"
 
       - name: Upload executable files
         run: |
-          Get-ChildItem -Path . -Filter *.exe -Recurse | ForEach-Object {
+          Get-ChildItem -Path . -Filter '*.exe,*.zip' -Recurse | ForEach-Object {
             $fileName = $_.Name
             $hash = Get-FileHash -Path $_.Name -Algorithm SHA256
             $hashLine = "$($hash.Hash.ToLower())  $fileName"
             Add-Content -Path "SHA2-256SUMS" -Value $hashLine
-            gh release upload v${{ env.version }} $fileName --clobber
+            gh release upload ${{ env.version }} $fileName --clobber
           }
-          gh release upload v${{ env.version }} SHA2-256SUMS --clobber
+          gh release upload ${{ env.version }} SHA2-256SUMS --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
