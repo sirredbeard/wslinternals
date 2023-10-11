@@ -8,28 +8,36 @@ Provides a list of installed distributions, the official Linux distro name, the 
 
 ## wslctl
 
-Allows WSL distros to be started on launch. The syntax follows that of systemctl:
+Allows WSL distros to be started on Windows startup. The syntax follows that of systemctl:
 
-```
-wslctl enable pengwin
-wslctl disable pengwin
-wslctl restart pengwin
-```
+`wslctl enable pengwin`
+
+`wslctl disable pengwin`
+
+`wslctl restart pengwin`
+
+## wsl-dist-update
+
+Run package updates on all installed WSL distros. Tested on: Pengwin, Fedora Remix for WSL, Ubuntu, Debian, openSUSE Tumbleweed, ArchWSL, Oracle Linux, and the WSL.
+
+wsl-dist-update can optionally additionally update the WSL system distro by passing the `--system` option.
+
+To run wsl-dist-update as a service, copy wsl-dist-update.exe to a permanent location and run wsl-dist-update-sched.ps1, modifying the path to the .exe as needed.
 
 ## wsl-reset
 
-A troubleshooting utility that resets WSL to various degrees.
+A troubleshooting utility that resets the WSL 2 stack to various degrees.
 
-`wsl-reset --reset` - shuts down WSL, resets the WSL service, and installs any WSL updates, if available
+`wsl-reset --reset` - Shuts down WSL, resets the WSL service, and installs any WSL updates, if available.
 
-`wsl-reset --hard-reset` - shuts down WSL, stops the WSL service, uninstalls WSL, and re-installs WSL
+`wsl-reset --hard-reset` - Shuts down WSL, stops the WSL service, uninstalls WSL, and re-installs WSL.
 
-`wsl-reset --destrutive-reset` - shuts down WSL, restarts the WSL service, **unregisters all WSL distros**, stops the WSL service, uninstalls WSL, and re-installs WSL
+`wsl-reset --destrutive-reset` - Shuts down WSL, restarts the WSL service, **unregisters all WSL distros**, stops the WSL service, uninstalls WSL, and re-installs WSL.
 
 ## sysdistrowt
 
 Adds the WSL System Distro (CBL-Mariner) to the Windows Terminal and/or Windows Terminal Preview profiles, for easier debugging.
 
-### Misc
+## build-wslinternals
 
- /prompts folder contains example AI prompts used to generate the first draft of these scripts, the final scripts got hand polished, but they are there to see.
+Builds wslinternals PowerShell scripts to .exe files using ps2exe. Requires PowerShell 5.
