@@ -18,7 +18,9 @@ Allows WSL distros to be started on Windows startup. The syntax follows that of 
 
 ## wsl-dist-update
 
-Run package updates on all installed WSL distros. Tested on: Pengwin, Fedora Remix for WSL, Ubuntu, Debian, openSUSE Tumbleweed, ArchWSL, Oracle Linux, and the WSL.
+![image](https://github.com/sirredbeard/wslinternals/assets/33820650/3f2137d3-ac79-4cf4-bfa1-53d713be89da)
+
+Run package updates on all installed WSL distros. Tested on: Pengwin, Fedora Remix for WSL, Ubuntu, Debian, openSUSE Tumbleweed, ArchWSL, Oracle Linux, and the WSL System Distro.
 
 wsl-dist-update can optionally additionally update the WSL system distro by passing the `--system` option.
 
@@ -35,6 +37,8 @@ A troubleshooting utility that resets the WSL 2 stack to various degrees.
 `wsl-reset --destrutive-reset` - Shuts down WSL, restarts the WSL service, **unregisters all WSL distros**, stops the WSL service, uninstalls WSL, and re-installs WSL.
 
 ## sysdistrowt
+
+![image](https://github.com/sirredbeard/wslinternals/assets/33820650/ea645f9e-af55-47f2-8ccf-5a14aa5e7d3b)
 
 Adds the WSL System Distro (CBL-Mariner) to the Windows Terminal and/or Windows Terminal Preview profiles, for easier debugging.
 
