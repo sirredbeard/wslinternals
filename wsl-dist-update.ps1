@@ -41,9 +41,3 @@ $results = foreach ($distro in $distros) {
         ID_LIKE = $idLike
     }
 }
-
-# Update WSL System Distro if --system flag is passed
-if ($args.Contains("--system")) {
-    Write-Host "Updating WSL System Distro"
-    wsl.exe -u root --system tdnf update -y > $null
-}
