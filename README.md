@@ -2,6 +2,15 @@
 
 ![Screenshot 2023-06-02 194607](https://github.com/sirredbeard/wslinternals/assets/33820650/419c5854-bb69-4d95-8f1f-6e8f0b8ac6b0)
 
+## List of utilities
+
+* **[list-wsl](https://github.com/sirredbeard/wslinternals#list-wsl)** - Lists detailed info on installed WSL distros
+* **[wslctl](https://github.com/sirredbeard/wslinternals#wslctl)** - Start WSL distros on Windows startup
+* **[wsl-dist-update](https://github.com/sirredbeard/wslinternals#wsl-dist-update)** - Update packages in all installed WSL distros
+* **[wsl-reset](https://github.com/sirredbeard/wslinternals#wsl-reset)** - WSL troubleshooting tool, with soft, hard, and nuclear resets
+* **[sysdistrowt](https://github.com/sirredbeard/wslinternals#sysdistrowt)** - Add the WSL System Distro to Windows Terminal
+* **[build-wslinternals](https://github.com/sirredbeard/wslinternals#build-wslinternals)** - Build wslinternals
+
 ## list-wsl
 
 Provides a list of installed distributions, the official Linux distro name, the Linux distro version, the default user, systemd status, current state, and WSL version.
@@ -10,13 +19,15 @@ Provides a list of installed distributions, the official Linux distro name, the 
 
 Allows WSL distros to be started on Windows startup. The syntax follows that of systemctl:
 
-`wslctl enable pengwin`
+`wslctl enable pengwin` - Will start Pengwin on Windows startup.
 
-`wslctl disable pengwin`
+`wslctl disable pengwin` - Will disable starting Pengwin on Windows startup.
 
-`wslctl restart pengwin`
+`wslctl restart pengwin` - Will restart Pengwin running in background.
 
 ## wsl-dist-update
+
+![image](https://github.com/sirredbeard/wslinternals/assets/33820650/e1b49c52-c87e-448d-9884-f296165060d6)
 
 Run package updates on all installed WSL distros. Tested on: Pengwin, Fedora Remix for WSL, Ubuntu, Debian, openSUSE Tumbleweed, ArchWSL, AlmaLinux, Oracle Linux, Alpine, and the WSL System Distro.
 
