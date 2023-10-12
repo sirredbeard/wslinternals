@@ -22,14 +22,26 @@ $results = foreach ($distro in $distros) {
         "*rhel*" {
             wsl.exe -d $distro -u root dnf update -y > $null
         }
+        "almalinux" {
+            wsl.exe -d $distro -u root dnf update -y > $null
+        }
+        "rocky" {
+            wsl.exe -d $distro -u root dnf update -y > $null
+        }
+        "scientific" {
+            wsl.exe -d $distro -u root dnf update -y > $null
+        }
+        "centos" {
+            wsl.exe -d $distro -u root dnf update -y > $null
+        }         
         "*alpine*" {
             wsl.exe -d $distro -u root apk update > $null
             wsl.exe -d $distro -u root apk upgrade -y > $null
         }
-        "almalinux" {
-            wsl.exe -d $distro -u root dnf update -y > $null
-        }
         "*suse*" {
+            wsl.exe -d $distro -u root zypper dup -y > $null
+        }
+        "*sles*" {
             wsl.exe -d $distro -u root zypper dup -y > $null
         }
         "*arch*" {
