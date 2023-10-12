@@ -9,12 +9,12 @@ $results = foreach ($distro in $distros) {
     Write-Host "Updating $distro"
     switch -Wildcard ($id) {
         "*debian*" {
-            wsl.exe -d $distro -u root apt-get update > $null
-            wsl.exe -d $distro -u root apt-get upgrade -y > $null
+            wsl.exe -d $distro -u root -- bash -c "DEBIAN_FRONTEND=noninteractive apt-get update -y > /dev/null"
+            wsl.exe -d $distro -u root -- bash -c "DEBIAN_FRONTEND=noninteractive apt-get upgrade -y > /dev/null"
         }
         "*ubuntu*" {
-            wsl.exe -d $distro -u root apt-get update > $null
-            wsl.exe -d $distro -u root apt-get upgrade -y > $null
+            wsl.exe -d $distro -u root -- bash -c "DEBIAN_FRONTEND=noninteractive apt-get update -y > /dev/null"
+            wsl.exe -d $distro -u root -- bash -c "DEBIAN_FRONTEND=noninteractive apt-get upgrade -y > /dev/null"
         }
         "*fedora*" {
             wsl.exe -d $distro -u root dnf update -y > $null
