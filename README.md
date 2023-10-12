@@ -39,9 +39,9 @@ A troubleshooting utility that resets the WSL 2 stack to various degrees.
 
 `wsl-reset -reset` - Shuts down WSL, resets the WSL service, and installs any WSL updates, if available.
 
-`wsl-reset -hard-reset` - Shuts down WSL, stops the WSL service, uninstalls WSL, and re-installs WSL.
+`wsl-reset -hardreset` - Shuts down WSL, stops the WSL service, uninstalls WSL, and re-installs WSL.
 
-`wsl-reset -destrutive-reset` - Shuts down WSL, restarts the WSL service, **unregisters all WSL distros**, stops the WSL service, uninstalls WSL, and re-installs WSL.
+`wsl-reset -destrutivereset` - Shuts down WSL, restarts the WSL service, **unregisters all WSL distros**, stops the WSL service, uninstalls WSL, and re-installs WSL.
 
 ## sysdistrowt
 
