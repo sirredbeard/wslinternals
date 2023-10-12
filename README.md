@@ -37,11 +37,11 @@ To run wsl-dist-update as a service, copy wsl-dist-update.exe to a permanent loc
 
 A troubleshooting utility that resets the WSL 2 stack to various degrees.
 
-`wsl-reset --reset` - Shuts down WSL, resets the WSL service, and installs any WSL updates, if available.
+`wsl-reset -reset` - Shuts down WSL, resets the WSL service, and installs any WSL updates, if available.
 
-`wsl-reset --hard-reset` - Shuts down WSL, stops the WSL service, uninstalls WSL, and re-installs WSL.
+`wsl-reset -hard-reset` - Shuts down WSL, stops the WSL service, uninstalls WSL, and re-installs WSL.
 
-`wsl-reset --destrutive-reset` - Shuts down WSL, restarts the WSL service, **unregisters all WSL distros**, stops the WSL service, uninstalls WSL, and re-installs WSL.
+`wsl-reset -destrutive-reset` - Shuts down WSL, restarts the WSL service, **unregisters all WSL distros**, stops the WSL service, uninstalls WSL, and re-installs WSL.
 
 ## sysdistrowt
 
@@ -51,4 +51,4 @@ Adds the WSL System Distro (CBL-Mariner) to the Windows Terminal and/or Windows 
 
 ## build-wslinternals
 
-Builds wslinternals PowerShell scripts to .exe files using ps2exe. Requires PowerShell 5.
+Builds wslinternals PowerShell scripts to .exe files using ps2exe. Must be run as Administrator on PowerShell 7 or on PowerShell 5. 

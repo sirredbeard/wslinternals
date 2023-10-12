@@ -1,19 +1,16 @@
+param (
+    [switch]$reset,
+    [switch]$hardReset,
+    [switch]$destructiveReset
+)
 
 if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     Write-Error "This script must be run as an administrator."
     Exit 1
 }
 
-
-if (-not $args) {
-    Write-Error "This script must be run with either --reset, --hard-reset, or --destructive-reset."
-    Exit 1
-}
-
-
-$arg = $args[0]
-switch ($arg) {
-    "--reset" {
+switch ($true) {
+    $reset {
         wsl.exe --shutdown -ErrorAction SilentlyContinue 2>$null
         Restart-Service "Windows Subsystem for Linux" -Force -ErrorAction SilentlyContinue
         if ($LASTEXITCODE -ne 0) {
@@ -22,7 +19,7 @@ switch ($arg) {
         wsl.exe --update > $null
         Write-Host "WSL has been shutdown, Windows service restarted, and updated, if applicable."
     }
-    "--hard-reset" {
+    $hardReset {
         wsl.exe --shutdown -ErrorAction SilentlyContinue 2>$null
         Stop-Service "Windows Subsystem for Linux" -Force -ErrorAction SilentlyContinue
         if ($LASTEXITCODE -ne 0) {
@@ -34,7 +31,7 @@ switch ($arg) {
         wsl.exe --install --no-launch --no-distribution
         Write-Host "WSL has been shutdown and re-installed."
     }
-    "--destructive-reset" {
+    $destructiveReset {
         wsl.exe --shutdown -ErrorAction SilentlyContinue 2>$null
         Restart-Service "Windows Subsystem for Linux" -Force -ErrorAction SilentlyContinue
         if ($LASTEXITCODE -ne 0) {
@@ -55,7 +52,7 @@ switch ($arg) {
         Write-Host "WSL has been shutdown, all distros unregistered, and WSL has been re-installed."
     }
     default {
-        Write-Error "Invalid argument. This script must be run with either --reset, --hard-reset, or --destructive-reset."
+        Write-Error "This script must be run with either --reset, --hard-reset, or --destructive-reset."
         Exit 1
     }
 }
