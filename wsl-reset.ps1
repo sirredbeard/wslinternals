@@ -52,7 +52,7 @@ switch ($true) {
         Write-Host "WSL has been shutdown, all distros unregistered, and WSL has been re-installed."
     }
     default {
-        Write-Error "This script must be run with either --reset, --hard-reset, or --destructive-reset."
+        Write-Error "This script must be run with either -reset, -hardreset, or -destructivereset."
         Exit 1
     }
 }
