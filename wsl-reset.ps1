@@ -28,6 +28,12 @@ switch ($true) {
         if (-not (Get-AppxPackage *WindowsSubsystemForLinux* | Remove-AppxPackage -ErrorAction SilentlyContinue 2>$null)) {
             Disable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -ErrorAction SilentlyContinue 2>$null
         }
+        $containersJson = & hcsdiag list -raw
+        $containers = $containersJson | ConvertFrom-Json
+        $containerGuids = $containers | ForEach-Object { $_.Id }
+        foreach ($containerGuid in $containerGuids) {
+            & hcsdiag kill $containerGuid
+       }
         wsl.exe --install --no-launch --no-distribution
         Write-Host "WSL has been shutdown and re-installed."
     }
@@ -47,6 +53,12 @@ switch ($true) {
         }
         if (-not (Get-AppxPackage *WindowsSubsystemForLinux* | Remove-AppxPackage -ErrorAction SilentlyContinue 2>$null)) {
             Disable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -ErrorAction SilentlyContinue 2>$null
+        }
+        $containersJson = & hcsdiag list -raw
+        $containers = $containersJson | ConvertFrom-Json
+        $containerGuids = $containers | ForEach-Object { $_.Id }
+        foreach ($containerGuid in $containerGuids) {
+            & hcsdiag kill $containerGuid
         }
         wsl.exe --install --no-launch --no-distribution
         Write-Host "WSL has been shutdown, all distros unregistered, and WSL has been re-installed."
