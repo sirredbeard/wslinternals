@@ -29,6 +29,10 @@ Allows WSL distros to be started on Windows startup. The syntax follows that of 
 
 ![image](https://github.com/sirredbeard/wslinternals/assets/33820650/e1b49c52-c87e-448d-9884-f296165060d6)
 
+`wsl-dist-update` - Will update all installed WSL distros.
+
+`wsl-dist-update -winget` - Will update all installed WSL distros and run winget update.
+
 Run package updates on all installed WSL distros. Tested on: Pengwin, Fedora Remix for WSL, Ubuntu, Debian, openSUSE Tumbleweed, ArchWSL, AlmaLinux, Oracle Linux, Alpine, and the WSL System Distro.
 
 To run wsl-dist-update as a service, copy wsl-dist-update.exe to a permanent location and run wsl-dist-update-sched.ps1, modifying the path to the .exe as needed.
