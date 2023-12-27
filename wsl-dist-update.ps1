@@ -1,3 +1,8 @@
+# Check for winget update parameter
+param(
+    [switch]$winget
+)
+
 # Get list of installed WSL distros from registry
 $distros = Get-ChildItem "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Lxss" | ForEach-Object { $_.GetValue("DistributionName") }
 
@@ -51,5 +56,15 @@ $results = foreach ($distro in $distros) {
     [PSCustomObject]@{
         DistroName = $distro
         ID_LIKE = $idLike
+    }
+}
+
+# Update winget
+if ($PSBoundParameters.ContainsKey('winget')) {
+    $wingetCommand = Get-Command winget -ErrorAction SilentlyContinue
+
+    if ($wingetCommand) {
+        Write-Host "Updating winget"
+        winget update --all --include-unknown > $null
     }
 }
