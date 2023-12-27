@@ -33,6 +33,8 @@ Allows WSL distros to be started on Windows startup. The syntax follows that of 
 
 `wsl-dist-update -winget` - Update all installed WSL distros and run winget update.
 
+`wsl-dist-update -scoop` - Update all installed WSL distros and run Scoop update. Can be combined with `-winget`.
+
 Run package updates on all installed WSL distros. Tested on: Pengwin, Fedora Remix for WSL, Ubuntu, Debian, openSUSE Tumbleweed, ArchWSL, AlmaLinux, Oracle Linux, Alpine, and the WSL System Distro.
 
 To run wsl-dist-update as a service, copy wsl-dist-update.exe to a permanent location and run wsl-dist-update-sched.ps1, modifying the path to the .exe as needed.
