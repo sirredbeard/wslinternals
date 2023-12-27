@@ -76,6 +76,6 @@ if ($PSBoundParameters.ContainsKey('scoop')) {
 
     if ($scoopCommand) {
         Write-Host "Updating scoop"
-        scoop update * > $null
+        powershell -NonInteractive -NoProfile -Command "scoop update *" > $null 2>&1
     }
 }
