@@ -1,6 +1,7 @@
 # Check for winget update parameter
 param(
-    [switch]$winget
+    [switch]$winget,
+    [switch]$scoop
 )
 
 # Get list of installed WSL distros from registry
@@ -66,5 +67,15 @@ if ($PSBoundParameters.ContainsKey('winget')) {
     if ($wingetCommand) {
         Write-Host "Updating winget"
         winget update --all --include-unknown > $null
+    }
+}
+
+# Update scoop
+if ($PSBoundParameters.ContainsKey('scoop')) {
+    $scoopCommand = Get-Command scoop update -ErrorAction SilentlyContinue
+
+    if ($scoopCommand) {
+        Write-Host "Updating scoop"
+        scoop update * > $null
     }
 }
