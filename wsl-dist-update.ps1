@@ -11,7 +11,7 @@ $results = foreach ($distro in $distros) {
     $osReleasePath = "\\wsl$\$distro\etc\os-release"
     #$idLike = (wsl.exe -d $distro cat /etc/os-release | Select-String "^ID_LIKE=").ToString().Split("=")[1]
     $id = (wsl.exe -d $distro cat /etc/os-release | Select-String "^ID=").ToString().Split("=")[1]
-    Write-Host "Updating $(if ($distro -eq 'WLinux') { 'Pengwin' } else { $distro })"
+    Write-Host "Updating $(if ($distro -eq 'WLinux') { 'Pengwin' } elseif ($distro -eq 'fedoraremix') { 'Fedora Remix for WSL' } else { $distro })"
     switch -Wildcard ($id) {
         "*debian*" {
             wsl.exe -d $distro -u root -- bash -c "DEBIAN_FRONTEND=noninteractive apt-get update -y > /dev/null"
