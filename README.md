@@ -19,19 +19,19 @@ Provides a list of installed distributions, the official Linux distro name, the 
 
 Allows WSL distros to be started on Windows startup. The syntax follows that of systemctl:
 
-`wslctl enable pengwin` - Will start Pengwin on Windows startup.
+`wslctl enable pengwin` - Start Pengwin on Windows startup.
 
-`wslctl disable pengwin` - Will disable starting Pengwin on Windows startup.
+`wslctl disable pengwin` - Disable starting Pengwin on Windows startup.
 
-`wslctl restart pengwin` - Will restart Pengwin running in background.
+`wslctl restart pengwin` - Restart Pengwin running in background.
 
 ## wsl-dist-update
 
 ![image](https://github.com/sirredbeard/wslinternals/assets/33820650/e1b49c52-c87e-448d-9884-f296165060d6)
 
-`wsl-dist-update` - Will update all installed WSL distros.
+`wsl-dist-update` - Update all installed WSL distros.
 
-`wsl-dist-update -winget` - Will update all installed WSL distros and run winget update.
+`wsl-dist-update -winget` - Update all installed WSL distros and run winget update.
 
 Run package updates on all installed WSL distros. Tested on: Pengwin, Fedora Remix for WSL, Ubuntu, Debian, openSUSE Tumbleweed, ArchWSL, AlmaLinux, Oracle Linux, Alpine, and the WSL System Distro.
 
