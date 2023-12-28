@@ -18,6 +18,8 @@ Provides a list of installed distributions, the official Linux distro name, the 
 
 ## wsl-latest-kernel
 
+![image](https://github.com/sirredbeard/wslinternals/assets/33820650/6ddbda88-da15-4d5d-896a-b42e44503e8b)
+
 Downloads, builds, and installs the latest kernel release from WSL2-Linux-Kernel as a custom kernel in WSL2.
 
 `wsl-latest-kernel` - Run wsl-latest-kernel.
