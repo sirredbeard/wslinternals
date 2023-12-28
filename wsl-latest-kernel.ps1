@@ -57,6 +57,11 @@ if ($latestRelease.tag_name -eq $wslKernelVersion) {
     Exit 1
 }
 
+# Run a persistent process in the wsl-system distro to prevent it from shutting down and resetting the environment
+$job = Start-Job -ScriptBlock {
+    wsl --system --user root sh -c "while true; do sleep 1000; done"
+}
+
 # Install kernel build dependencies in the WSL system distro
 Write-Host "Installing kernel build dependencies in the WSL system distro" -ForegroundColor Green
 wsl --system --user root tdnf install -y gcc glibc-devel kernel-headers make gawk tar bc perl python3 bison flex dwarves binutils diffutils elfutils-libelf-devel zlib-devel openssl-devel
@@ -144,6 +149,9 @@ kernel=$wslKernelPath
     }
     $wslConfig | Out-File -FilePath $wslConfigPath -Encoding ascii
 }
+
+# Stop the persistent process in the wsl-system distro
+Stop-Job -Job $job
 
 # Display message to restart WSL
 Write-Host "Restart WSL to use the new kernel" -ForegroundColor Green
