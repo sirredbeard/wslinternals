@@ -5,6 +5,7 @@
 ## List of utilities
 
 * **[list-wsl](https://github.com/sirredbeard/wslinternals#list-wsl)** - Lists detailed info on installed WSL distros
+* **[wsl-latest-kernel](https://github.com/sirredbeard/wslinternals#wsl-latest-kernel)** - Downloads, builds, and installs the latest kernel from WSL2-Linux-Kernel.
 * **[wslctl](https://github.com/sirredbeard/wslinternals#wslctl)** - Start WSL distros on Windows startup
 * **[wsl-dist-update](https://github.com/sirredbeard/wslinternals#wsl-dist-update)** - Update packages in all installed WSL distros
 * **[wsl-reset](https://github.com/sirredbeard/wslinternals#wsl-reset)** - WSL troubleshooting tool, with soft, hard, and nuclear resets
@@ -14,6 +15,18 @@
 ## list-wsl
 
 Provides a list of installed distributions, the official Linux distro name, the Linux distro version, the default user, systemd status, current state, and WSL version.
+
+## wsl-latest-kernel
+
+Downloads, builds, and installs the latest kernel release from WSL2-Linux-Kernel as a custom kernel in WSL2.
+
+`wsl-latest-kernel` - Run wsl-latest-kernel.
+
+`wsl-latest-kernel -force` - Overwrites the existing custom kernel.
+
+`wsl-latest-kernel -customconfig kernelconfig` - Build the kernel with a custom kernel config file. Expects a Windows path.
+
+`wsl-latest-kernel -revert` - Reverts to the default stock WSL2 kernel.
 
 ## wslctl
 
