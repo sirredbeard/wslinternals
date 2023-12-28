@@ -26,7 +26,7 @@ if ($revert) {
     Exit 0
 }
 
-# Check if a custom kernel is already set and exit if -force is not used
+# Check if a custom kernel is already set in .wslconfig and exit if -force is not used
 $wslConfigPath = "$env:USERPROFILE\.wslconfig"
 if ((Test-Path -Path $wslConfigPath) -and (Select-String -Path $wslConfigPath -Pattern 'kernel=' -Quiet) -and !$force) {
     Write-Error "A custom kernel is set in $wslConfigPath. Use -force to override." 
@@ -41,13 +41,25 @@ if ($customConfig -and !(Test-Path -Path $customConfig)) {
     Write-Host "Using kernel custom config $customConfig" -ForegroundColor Green
 }
 
+# Check current WSL kernel version
+$wslKernelVersion = wsl.exe --system --user root uname -r
+Write-Host "Current installed WSL kernel version is $wslKernelVersion" -ForegroundColor Green
+
+# Detect the latest release of WSL2-Linux-Kernel on GitHub
+$latestRelease = Invoke-RestMethod -Uri 'https://api.github.com/repos/microsoft/WSL2-Linux-Kernel/releases/latest'
+
+# Display the latest release version
+Write-Host "Latest WSL release version on GitHub is $($latestRelease.tag_name.Replace('linux-msft-wsl-', ''))" -ForegroundColor Green
+
+# Check if the latest release is newer than the current WSL kernel version
+if ($latestRelease.tag_name -eq $wslKernelVersion) {
+    Write-Host "The latest release of WSL2-Linux-Kernel is already installed" -ForegroundColor Green
+    Exit 1
+}
+
 # Install kernel build dependencies in the WSL system distro
 Write-Host "Installing kernel build dependencies in the WSL system distro" -ForegroundColor Green
 wsl --system --user root tdnf install -y gcc glibc-devel kernel-headers make gawk tar bc perl python3 bison flex dwarves binutils diffutils elfutils-libelf-devel zlib-devel openssl-devel
-
-# Detect the latest release of WSL2-Linux-Kernel on GitHub
-Write-Host "Detecting the latest release of WSL2-Linux-Kernel on GitHub" -ForegroundColor Green
-$latestRelease = Invoke-RestMethod -Uri 'https://api.github.com/repos/microsoft/WSL2-Linux-Kernel/releases/latest'
 
 # Form the kernel tar URL
 $downloadUrl = "https://github.com/microsoft/WSL2-Linux-Kernel/archive/refs/tags/$($latestRelease.tag_name).tar.gz"
