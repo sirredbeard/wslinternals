@@ -53,6 +53,10 @@ $results = foreach ($distro in $distros) {
         "*arch*" {
             wsl.exe -d $distro -u root pacman -Syu --noconfirm > $null
         }
+        "openEuler" {
+            Write-Host wsl.exe -d $distro -u root dnf update -y
+            wsl.exe -d $distro -u root dnf update -y > $null
+        }
     }
     [PSCustomObject]@{
         DistroName = $distro
