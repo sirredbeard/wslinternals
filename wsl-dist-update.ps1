@@ -1,7 +1,9 @@
 # Check for winget update parameter
 param(
     [switch]$winget,
-    [switch]$scoop
+    [switch]$scoop,
+    [switch]$wsl,
+    [switch]$wslpr
 )
 
 # Get list of installed WSL distros from registry
@@ -84,5 +86,25 @@ if ($PSBoundParameters.ContainsKey('scoop')) {
     if ($scoopCommand) {
         Write-Host "Updating scoop"
         powershell -NonInteractive -NoProfile -Command "scoop update *" > $null 2>&1
+    }
+}
+
+# Update WSL
+if ($PSBoundParameters.ContainsKey('wsl')) {
+    $wslCommand = Get-Command "wsl" -ErrorAction SilentlyContinue
+
+    if ($wslCommand) {
+        Write-Host "Updating WSL"
+        powershell -NonInteractive -NoProfile -Command "wsl.exe --update" > $null 2>&1
+    }
+}
+
+# Update WSL Pre-Release
+if ($PSBoundParameters.ContainsKey('wslpr')) {
+    $wslprCommand = Get-Command "wsl" -ErrorAction SilentlyContinue
+
+    if ($wslprCommand) {
+        Write-Host "Updating WSL Pre-Release"
+        powershell -NonInteractive -NoProfile -Command "wsl.exe --update --pre-release" > $null 2>&1
     }
 }
