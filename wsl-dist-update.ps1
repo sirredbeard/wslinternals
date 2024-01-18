@@ -9,6 +9,9 @@ $distros = Get-ChildItem "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Lxss" 
 
 # Loop through each distro and get ID_LIKE variable from /etc/os-release using wsl.exe
 $results = foreach ($distro in $distros) {
+    if ($distro -eq "docker-desktop" -or $distro -eq "docker-desktop-data" -or $distro -eq "podman-machine-default" -or $distro -eq "rancher-desktop" -or $distro -eq "rancher-desktop-data") {
+        continue
+    }
     $osReleasePath = "\\wsl$\$distro\etc\os-release"
     #$idLike = (wsl.exe -d $distro cat /etc/os-release | Select-String "^ID_LIKE=").ToString().Split("=")[1]
     $id = (wsl.exe -d $distro cat /etc/os-release | Select-String "^ID=").ToString().Split("=")[1]
