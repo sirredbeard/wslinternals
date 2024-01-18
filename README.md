@@ -14,13 +14,15 @@
 
 ## list-wsl
 
+![image](https://github.com/sirredbeard/wslinternals/assets/33820650/ab1f68b0-c2e5-4e0e-bccd-2c5bcf212a1a)
+
 Provides a list of installed distributions, the official Linux distro name, the Linux distro version, the default user, systemd status, current state, and WSL version.
 
 ## wsl-latest-kernel
 
 ![image](https://github.com/sirredbeard/wslinternals/assets/33820650/6ddbda88-da15-4d5d-896a-b42e44503e8b)
 
-Downloads, builds, and installs the latest kernel release from WSL2-Linux-Kernel as a custom kernel in WSL2.
+Downloads, builds, and installs the latest kernel release from WSL2-Linux-Kernel as a custom kernel in WSL2. This is occasionally newer than the version available through `wsl.exe --update`.
 
 `wsl-latest-kernel` - Run wsl-latest-kernel.
 
