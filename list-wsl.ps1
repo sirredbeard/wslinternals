@@ -17,18 +17,26 @@ $wslDistributions = Get-ChildItem -Path "HKCU:\SOFTWARE\Microsoft\Windows\Curren
     } elseif ($distribution["Name"] -eq "docker-desktop-runtime") {
         $distribution["Linux Distro"] = "Docker Desktop Runtime"
     } elseif ($distribution["Name"] -eq "rancher-desktop") {
-        $distribution["Linux Distro"] = "Rancher Desktop WSL Distribution"
+        $distribution["Linux Distro"] = "Rancher Desktop"
     } elseif ($distribution["Name"] -eq "rancher-desktop-data") {
         $distribution["Linux Distro"] = "Rancher Desktop Data"
+    } elseif ($distribution["Name"] -eq "podman-machine-default") {
+        $distribution["Linux Distro"] = "Podman Desktop"
     } else {
         $distribution["State"] = ""
     }
 
-    if ($distribution["Name"] -ne "docker-desktop" -and $distribution["Name"] -ne "docker-desktop-data" -and $distribution["Name"] -ne "docker-desktop-runtime" -and $distribution["Name"] -ne "rancher-desktop" -and $distribution["Name"] -ne "rancher-desktop-data") {
+    if ($distribution["Name"] -ne "docker-desktop" -and $distribution["Name"] -ne "docker-desktop-data" -and $distribution["Name"] -ne "docker-desktop-runtime" -and $distribution["Name"] -ne "rancher-desktop" -and $distribution["Name"] -ne "rancher-desktop-data" -and $distribution["Name"] -ne "podman-machine-default") {
+        Write-Host $distribution["Name"]
         $osRelease = Invoke-Expression "wsl.exe -d $($distribution["Name"]) cat /etc/os-release"
         if ($osRelease) {
             $distribution["Linux Distro"] = ($osRelease | Where-Object { $_ -like "PRETTY_NAME=*" }).Split("=")[1].Replace('"', '')
-            $distribution["Distro Version"] = ($osRelease | Where-Object { $_ -like "*VERSION=*" }).Split("=")[1].Replace('"', '')
+            $versionLine = $osRelease | Where-Object { $_ -like "*VERSION=*" }
+            if ($versionLine) {
+                $distribution["Distro Version"] = $versionLine.Split("=")[1].Replace('"', '')
+            } else {
+                $distribution["Distro Version"] = ""
+            }
         }
 
         $wslConf = Invoke-Expression "wsl.exe -d $($distribution["Name"]) cat /etc/wsl.conf 2> `$null"
