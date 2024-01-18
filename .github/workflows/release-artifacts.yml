@@ -36,13 +36,13 @@ jobs:
       - name: Compile and release scripts
         run: |
           echo "Compile version ${{ env.version }}"
-          Get-ChildItem -Path . -Filter '*.ps1' -Recurse -Exclude build-wslinternals.ps1,wsl-dist-update-sched.ps1 | ForEach-Object {
+          Get-ChildItem -Path . -Filter '*.ps1' -Recurse -Exclude build-wslinternals.ps1,sched-wsl-dist-update.ps1 | ForEach-Object {
             Invoke-ps2exe -inputFile $_.Name -verbose
           }
 
       - name: Create archive
         run: |
-          Compress-Archive -Path .\*.exe, .\wsl-dist-update-sched.ps1 -DestinationPath "${{ env.version }}.zip"
+          Compress-Archive -Path .\*.exe, .\sched-wsl-dist-update.ps1 -DestinationPath "${{ env.version }}.zip"
 
       - name: Upload executable files
         run: |
