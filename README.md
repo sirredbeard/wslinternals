@@ -1,14 +1,14 @@
-# A collection of some nifty WSL-related utilities
+# wslinternals - A collection of some nifty WSL-related utilities
 
 ![Screenshot 2023-06-02 194607](https://github.com/sirredbeard/wslinternals/assets/33820650/419c5854-bb69-4d95-8f1f-6e8f0b8ac6b0)
 
 ## List of utilities
 
 * **[list-wsl](https://github.com/sirredbeard/wslinternals#list-wsl)** - Lists detailed info on installed WSL distros
-* **[wsl-latest-kernel](https://github.com/sirredbeard/wslinternals#wsl-latest-kernel)** - Downloads, builds, and installs the latest kernel from WSL2-Linux-Kernel.
-* **[wslctl](https://github.com/sirredbeard/wslinternals#wslctl)** - Start WSL distros on Windows startup
-* **[wsl-dist-update](https://github.com/sirredbeard/wslinternals#wsl-dist-update)** - Update packages in all installed WSL distros
-* **[wsl-reset](https://github.com/sirredbeard/wslinternals#wsl-reset)** - WSL troubleshooting tool, with soft, hard, and nuclear resets
+* **[wsl-latest-kernel](https://github.com/sirredbeard/wslinternals#wsl-latest-kernel)** - Downloads, builds, and installs the latest kernel from WSL2-Linux-Kernel
+* **[wslctl](https://github.com/sirredbeard/wslinternals#wslctl)** - Start WSL distros on Windows startup, like systemctl but for WSL distros
+* **[wsl-dist-update](https://github.com/sirredbeard/wslinternals#wsl-dist-update)** - Update packages in all installed WSL distros, also optionally WSL itself, winget, and Scoop
+* **[wsl-reset](https://github.com/sirredbeard/wslinternals#wsl-reset)** - WSL troubleshooting tool, with soft, hard, and destructive resets
 * **[sysdistrowt](https://github.com/sirredbeard/wslinternals#sysdistrowt)** - Add the WSL System Distro to Windows Terminal
 * **[build-wslinternals](https://github.com/sirredbeard/wslinternals#build-wslinternals)** - Build wslinternals
 
@@ -22,7 +22,7 @@ Provides a list of installed distributions, the official Linux distro name, the 
 
 ![image](https://github.com/sirredbeard/wslinternals/assets/33820650/6ddbda88-da15-4d5d-896a-b42e44503e8b)
 
-Downloads, builds, and installs the latest kernel release from WSL2-Linux-Kernel as a custom kernel in WSL2. This is occasionally newer than the version available through `wsl.exe --update`.
+Downloads, builds, and installs the latest kernel release from WSL2-Linux-Kernel as a custom kernel in WSL2. This is occasionally newer than the version available through `wsl.exe --update`. The kernel is built in and exported from the immutable WSL2 System Distro image (powered by CBL-Mariner aka Azure Linux OS) so that no dependencies have to be installed in your WSL distros and the process is the same regardless of what WSL distros you have installed.
 
 `wsl-latest-kernel` - Run wsl-latest-kernel.
 
@@ -58,9 +58,7 @@ Options:
 
     -wslpr - Also update Windows Subsystem for Linux Pre-Release
 
-Run package updates on all installed WSL distros. Tested on: Pengwin, Fedora Remix for WSL, Ubuntu, Debian, openSUSE Tumbleweed, ArchWSL, AlmaLinux, Oracle Linux, Alpine, and the WSL System Distro.
-
-To run wsl-dist-update as a Windows service, copy wsl-dist-update.exe to a permanent location and run sched-wsl-dist-update.ps1, modifying the path to the .exe as needed.
+Run package updates on all installed WSL distros. Tested on: Pengwin, Fedora Remix for WSL, Ubuntu, Debian, openSUSE Tumbleweed, ArchWSL, AlmaLinux, Oracle Linux, Alpine, and OpenEuler.
 
 ## wsl-reset
 
@@ -70,14 +68,22 @@ A troubleshooting utility that resets the WSL 2 stack to various degrees.
 
 `wsl-reset -hardreset` - Shuts down WSL, stops the WSL service, uninstalls WSL, and re-installs WSL.
 
-`wsl-reset -destrutivereset` - Shuts down WSL, restarts the WSL service, **unregisters all WSL distros**, stops the WSL service, uninstalls WSL, and re-installs WSL.
+`wsl-reset -destructivereset` - Shuts down WSL, restarts the WSL service, **unregisters all WSL distros**, stops the WSL service, uninstalls WSL, and re-installs WSL.
 
 ## sysdistrowt
 
 ![image](https://github.com/sirredbeard/wslinternals/assets/33820650/ea645f9e-af55-47f2-8ccf-5a14aa5e7d3b)
 
-Adds the WSL System Distro (CBL-Mariner) to the Windows Terminal and/or Windows Terminal Preview profiles, for easier debugging.
+Adds the WSL System Distro to the Windows Terminal and/or Windows Terminal Preview profiles, for easier debugging. Note that the WSL System Distro is immutable. Once you close the session, it will revert back to the standard image installed with WSL2, and all changes will be lost.
 
 ## build-wslinternals
 
-Builds wslinternals PowerShell scripts to .exe files using ps2exe. Must be run as Administrator on PowerShell 7 or on PowerShell 5. 
+Builds wslinternals PowerShell scripts to .exe files using ps2exe. Must be run as Administrator on PowerShell 7 or on PowerShell 5.
+
+# License
+
+wslinternals is licensed Apache 2.0
+
+# WSL Community
+
+Join the WSL community Telegram at [WSL.community](https://wsl.community)
