@@ -27,7 +27,7 @@ $wslDistributions = Get-ChildItem -Path "HKCU:\SOFTWARE\Microsoft\Windows\Curren
     }
 
     if ($distribution["Name"] -ne "docker-desktop" -and $distribution["Name"] -ne "docker-desktop-data" -and $distribution["Name"] -ne "docker-desktop-runtime" -and $distribution["Name"] -ne "rancher-desktop" -and $distribution["Name"] -ne "rancher-desktop-data" -and $distribution["Name"] -ne "podman-machine-default") {
-        Write-Host $distribution["Name"]
+
         $osRelease = Invoke-Expression "wsl.exe -d $($distribution["Name"]) cat /etc/os-release"
         if ($osRelease) {
             $distribution["Linux Distro"] = ($osRelease | Where-Object { $_ -like "PRETTY_NAME=*" }).Split("=")[1].Replace('"', '')
