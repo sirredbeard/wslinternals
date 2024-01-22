@@ -17,13 +17,16 @@ if (Test-Path $perfElfPath) {
     $arguments = "--system", "--user", "root", $perfElfPath
     $isExe = (Get-Process -Id $PID).ProcessName -eq 'wsl-perf'
     foreach ($arg in $args) {
-        if ($isExe -and $arg -match '^-[^-]') {
+        if ($isExe -and $arg -match '^--') {
             $arg = '-' + $arg
         }
         $arguments += , $arg
     }
     & wsl.exe $arguments
-} else {
+    
+    # Set the exit code to the exit code of the wsl.exe process
+    exit $LASTEXITCODE
+    } else {
     Write-Output "perf.elf not found"
     $userInput = Read-Host -Prompt 'Do you want to build perf? (Y/N)'
     if ($userInput -eq 'Y') {
