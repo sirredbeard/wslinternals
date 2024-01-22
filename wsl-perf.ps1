@@ -1,8 +1,3 @@
-#param (
-#    [Parameter(Mandatory=$false)]
-#    [string[]]$ScriptArgs
-#)
-
 # Function to convert a Windows path to a WSL path
 function Convert-PathToWSL($path) {
     return "/mnt/" + ($path -replace ":", "").Replace("\", "/").ToLower()
@@ -20,7 +15,11 @@ $currentDirectoryWSL = Convert-PathToWSL($currentDirectory)
 # Check if perf.elf exists
 if (Test-Path $perfElfPath) {
     $arguments = "--system", "--user", "root", $perfElfPath
+    $isExe = (Get-Process -Id $PID).ProcessName -eq 'wsl-perf'
     foreach ($arg in $args) {
+        if ($isExe -and $arg -match '^-[^-]') {
+            $arg = '-' + $arg
+        }
         $arguments += , $arg
     }
     & wsl.exe $arguments
