@@ -62,7 +62,7 @@ Downloads, builds, and installs the latest kernel release from WSL2-Linux-Kernel
 
 ## wsl-perf
 
-Allows use of the [perf tool](https://perf.wiki.kernel.org/index.php/Useful_Links) for benchmarking, traces, and kernel debugging.
+Allows use of the Linux kernel [perf tool](https://perf.wiki.kernel.org/index.php/Useful_Links) for benchmarking, traces, and kernel debugging.
 
 On first run, wsl-perf will download and build the perf tool from source and save the staticly linked binary as perf.elf.
 
