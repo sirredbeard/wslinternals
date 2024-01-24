@@ -74,7 +74,7 @@ On first run, wsl-perf will download and build the perf tool from source and sav
 
 wsl-perf will pass any command line arguments to perf.elf, which is run as root in the WSL2 System Distro.
 
-Unlike the other applications here, wsl-perf is built with [Nim](https://nim-lang.org/) due to limitations in argument parsing in PS2EXE.
+Unlike the other tools here, wsl-perf is built with [Nim](https://nim-lang.org/) due to limitations in argument parsing in PS2EXE. Nim compiles to C and is built by the MSVC C/C++ compiler. This tool was inspired by @buty4649's [project of the same name](https://github.com/buty4649/wsl-perf).
 
 ## wsl-reset
 
