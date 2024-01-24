@@ -2,6 +2,12 @@
 
 ![Screenshot 2023-06-02 194607](https://github.com/sirredbeard/wslinternals/assets/33820650/419c5854-bb69-4d95-8f1f-6e8f0b8ac6b0)
 
+## Status
+
+[![Test Build on Push](https://github.com/sirredbeard/wslinternals/actions/workflows/test-build-on-push.yml/badge.svg?branch=main)](https://github.com/sirredbeard/wslinternals/actions/workflows/test-build-on-push.yml)
+
+[![Build and Upload Artifacts on Release](https://github.com/sirredbeard/wslinternals/actions/workflows/build-on-release.yml/badge.svg)](https://github.com/sirredbeard/wslinternals/actions/workflows/build-on-release.yml)
+
 # List of utilities
 
 * **[list-wsl](https://github.com/sirredbeard/wslinternals#list-wsl)** - Lists detailed info on installed WSL distros
