@@ -44,4 +44,4 @@ foreach ($ps1File in $ps1Files) {
 }
 
 # Compile wslperf.nim to wsl-perf.exe
-nim c -d:release -d:static -o:bin\wsl-perf.exe wslperf.nim
+nim c --cc:vcc -d:release -d:static -o:bin\wsl-perf.exe wslperf.nim

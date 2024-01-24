@@ -1,4 +1,4 @@
-name: Release Artifacts
+name: Build and Upload Artifacts on Release
 
 on:
   release:
@@ -33,22 +33,17 @@ jobs:
         run: |
           Install-Module -Name ps2exe -Scope CurrentUser -Force
 
-      - name: Install Scoop to install Nim
+      - name: Install Scoop, Nim and Nim dependencies
         run: |
           iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
-
-      - name: Install Nim to compile Nim applications
-        run: |
-          scoop install nim
-
-      - name: Install Nim dependencies for Nim applications
-        run: |
+          echo "$env:USERPROFILE\scoop\shims" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          scoop install 7zip git nim
           nimble update -y
           nimble install -y puppy
 
       - name: Compile Nim applications
         run: |
-          nim c -d:release -d:static -o:bin\wsl-perf.exe wslperf.nim
+          nim c --cc:vcc -d:release -d:static -o:wsl-perf.exe wslperf.nim
 
       - name: Compile PowerShell scripts
         run: |
