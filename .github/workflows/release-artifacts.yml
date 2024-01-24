@@ -25,15 +25,32 @@ jobs:
           echo "version=$version" >> "$env:GITHUB_ENV"
           echo "version=$version"
 
-      - name: Set up PowerShell
+      - name: Configure PowerShell
         run: |
           Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
-      - name: Install ps2exe module
+      - name: Install ps2exe module to compile PowerShell scripts
         run: |
           Install-Module -Name ps2exe -Scope CurrentUser -Force
 
-      - name: Compile and release scripts
+      - name: Install Scoop to install Nim
+        run: |
+          iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
+
+      - name: Install Nim to compile Nim applications
+        run: |
+          scoop install nim
+
+      - name: Install Nim dependencies for Nim applications
+        run: |
+          nimble update -y
+          nimble install -y puppy
+
+      - name: Compile Nim applications
+        run: |
+          nim c -d:release -d:static -o:bin\wsl-perf.exe wslperf.nim
+
+      - name: Compile PowerShell scripts
         run: |
           echo "Compile version ${{ env.version }}"
           Get-ChildItem -Path . -Filter '*.ps1' -Recurse -Exclude build-wslinternals.ps1,sched-wsl-dist-update.ps1 | ForEach-Object {

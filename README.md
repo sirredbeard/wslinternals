@@ -68,6 +68,8 @@ On first run, wsl-perf will download and build the perf tool from source and sav
 
 wsl-perf will pass any command line arguments to perf.elf, which is run as root in the WSL2 System Distro.
 
+Unlike the other applications here, wsl-perf is built with [Nim](https://nim-lang.org/) due to limitations in argument parsing in PS2EXE.
+
 ## wsl-reset
 
 A troubleshooting utility that resets the WSL 2 stack to various degrees.
