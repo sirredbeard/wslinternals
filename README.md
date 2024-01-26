@@ -24,9 +24,9 @@ Scoop:
 
 `scoop install wslinternals`
 
-winget is pending.
+winget:
 
-# Guide
+`winget install sirredbeard.wslinternals`
 
 ## list-wsl
 
