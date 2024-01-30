@@ -3,7 +3,8 @@ param(
     [switch]$force,
     [string]$customConfig,
     [switch]$skipClean,
-    [switch]$revert
+    [switch]$revert,
+    [switch]$check
 )
 
 # Function to convert a Windows path to a WSL path
@@ -55,6 +56,10 @@ Write-Host "Latest WSL release version on GitHub is $($latestRelease.tag_name.Re
 if ($latestRelease.tag_name -eq $wslKernelVersion) {
     Write-Host "The latest release of WSL2-Linux-Kernel is already installed" -ForegroundColor Green
     Exit 1
+}
+
+if ($check) {
+    Exit 0
 }
 
 # Run a persistent process in the wsl-system distro to prevent it from shutting down and resetting the environment
