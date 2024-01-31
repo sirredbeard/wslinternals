@@ -2,4 +2,5 @@
 *.elf
 /bin/
 *.tar.gz
+*.zip
 perf.data*

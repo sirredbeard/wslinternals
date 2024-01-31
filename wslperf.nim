@@ -34,7 +34,7 @@ else:
   let response = readLine(stdin)
   if response in ["", "Y", "y"]:
     echo "Installing perf"
-    discard runCommand("wsl.exe --system --user root sh -c \"while true; do sleep 1000; done\"&")
+    discard runCommand("wsl.exe --system --user root sh -c 'while true; do sleep 1000; done'")
     echo "Installing dependencies"
     discard runCommand("wsl.exe --system --user root tdnf install -y gcc glibc-devel make gawk tar kernel-headers binutils flex bison glibc-static diffutils elfutils-libelf-devel libnuma-devel libbabeltrace2-devel python3")
     echo "Downloading perf sources"
