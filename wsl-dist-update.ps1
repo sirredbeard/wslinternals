@@ -56,6 +56,8 @@ $results = foreach ($distro in $distros) {
             wsl.exe -d $distro -u root zypper dup -y > $null
         }
         "*arch*" {
+            wsl.exe -d $distro -u root pacman -Sy archlinux-keyring --noconfirm > $null
+            wsl.exe -d $distro -u root pacman-key --init > $null
             wsl.exe -d $distro -u root pacman -Syu --noconfirm > $null
         }
         "openEuler" {
