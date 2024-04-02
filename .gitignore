@@ -1,6 +1,10 @@
 *.exe
 *.elf
+*.dll
 /bin/
+**/bin/
+**/obj/
 *.tar.gz
 *.zip
-perf.data*
+*.pdb
+*.cache

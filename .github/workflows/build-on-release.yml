@@ -4,95 +4,42 @@ on:
   release:
     types: [created]
 
-defaults:
-  run:
-    shell: powershell
-
 jobs:
   build:
     runs-on: windows-latest
-    permissions: write-all
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Convert tag to version
-        id: convert_tag
-        run: |
-          $version = "${{ github.ref }}"
-          $version = $version.Replace('refs/tags/', '')
-          echo "version=$version" >> "$env:GITHUB_ENV"
-          echo "version=$version"
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 8.0.x
 
-      - name: Configure PowerShell
-        run: |
-          Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+      - name: Restore dependencies
+        run: dotnet restore wslinternals.sln
 
-      - name: Install ps2exe module to compile PowerShell scripts
+      - name: Build
         run: |
-          Install-Module -Name ps2exe -Scope CurrentUser -Force
+          dotnet build --configuration Release --no-restore wslinternals.sln
 
-      - name: Install Scoop, Nim and Nim dependencies
+      - name: Publish x86_64
         run: |
-          iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
-          echo "$env:USERPROFILE\scoop\shims" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          scoop install 7zip git nim
-          nimble update -y
-          nimble install -y puppy
+          dotnet publish --configuration Release --no-build --runtime win-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/x64 wslinternals.sln
 
-      - name: Compile Nim applications
+      - name: Publish arm64
         run: |
-          nim c --cc:vcc -d:release -d:static -o:wsl-perf.exe wslperf.nim
+          dotnet publish --configuration Release --no-build --runtime win-arm64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/arm64 wslinternals.sln
 
-      - name: Compile PowerShell scripts
-        run: |
-          echo "Compile version ${{ env.version }}"
-          Get-ChildItem -Path . -Filter '*.ps1' -Recurse -Exclude build-wslinternals.ps1,sched-wsl-dist-update.ps1 | ForEach-Object {
-            Invoke-ps2exe -inputFile $_.Name -verbose
-          }
+      - name: Upload x86_64 Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: wslinternals-x64
+          path: ./publish/x64/
 
-      - name: Create archive
-        run: |
-          Compress-Archive -Path .\*.exe, .\sched-wsl-dist-update.ps1 -DestinationPath "${{ env.version }}.zip"
-
-      - name: Upload executable files
-        run: |
-          Get-ChildItem -Path . -Filter *.exe -Recurse | ForEach-Object {
-            $fileName = $_.Name
-            $hash = Get-FileHash -Path $_.Name -Algorithm SHA256
-            $hashLine = "$($hash.Hash.ToLower())  $fileName"
-            Add-Content -Path "SHA2-256SUMS" -Value $hashLine
-            gh release upload ${{ env.version }} $fileName --clobber
-          }
-          gh release upload ${{ env.version }} SHA2-256SUMS --clobber
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload zip file
-        run: |
-            Get-ChildItem -Path . -Filter *.zip -Recurse | ForEach-Object {
-              $fileName = $_.Name
-              $hash = Get-FileHash -Path $_.Name -Algorithm SHA256
-              $hashLine = "$($hash.Hash.ToLower())  $fileName"
-              Add-Content -Path "SHA2-256SUMS" -Value $hashLine
-              gh release upload ${{ env.version }} $fileName --clobber
-            }
-            gh release upload ${{ env.version }} SHA2-256SUMS --clobber
-        env:
-            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
-  winget-release:
-    needs: build
-    runs-on: windows-latest
-    steps:
-      - name: Install winget-create
-        run: |
-            Invoke-WebRequest -Uri 'https://aka.ms/wingetcreate/latest' -OutFile 'wingetcreate.exe'
-      - name: Create WinGet Package PR        
-        run: |
-          $latestRelease = Invoke-RestMethod -Uri https://api.github.com/repos/sirredbeard/wslinternals/releases/latest
-          $url = $latestRelease.assets | Where-Object { $_.name -eq ($latestRelease.tag_name + ".zip") } | Select-Object -ExpandProperty browser_download_url
-          ./wingetcreate.exe update --submit --token "${{ secrets.WINGET_TOKEN }}" --urls $url --version "${{ github.event.release.tag_name }}" sirredbeard.wslinternals
-        env:
-          GH_TOKEN: ${{ secrets.WINGET_TOKEN }}            
+      - name: Upload arm64 Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: wslinternals-arm64
+          path: ./publish/arm64/
