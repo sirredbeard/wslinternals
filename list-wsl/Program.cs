@@ -24,6 +24,21 @@ public class Program
     // Define the Main method
     public static void Main(string[] args)
     {
+
+        // Check if WSL distributions are installed
+        if (Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Lxss") == null)
+        {
+            Console.Error.WriteLine("No WSL distributions are installed.");
+            Environment.Exit(1);
+        }
+
+        // Check if SOFTWARE\Microsoft\Windows\CurrentVersion\Lxss contains subkeys
+        if (Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Lxss").GetSubKeyNames().Length == 0)
+        {
+            Console.Error.WriteLine("No WSL distributions are installed.");
+            Environment.Exit(1);
+        }
+
         // Declare a variable to store the GUID of the WSL distribution
         var defaultGuid = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Lxss").GetValue("DefaultDistribution").ToString();
 

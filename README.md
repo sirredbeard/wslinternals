@@ -26,12 +26,14 @@ winget:
 `winget install sirredbeard.wslinternals`
 
 ## list-wsl
+✅ Refactored to .NET, building, and tested
 
 ![image](https://github.com/sirredbeard/wslinternals/assets/33820650/ab1f68b0-c2e5-4e0e-bccd-2c5bcf212a1a)
 
 Provides a list of installed distributions, the official Linux distro name, the Linux distro version, the default user, systemd status, current state, and WSL version.
 
 ## wsl-update
+✅ Refactored to .NET, building, and tested
 
 ![image](https://github.com/sirredbeard/wslinternals/assets/33820650/e1b49c52-c87e-448d-9884-f296165060d6)
 
@@ -50,6 +52,7 @@ Options:
 Run package updates on all installed WSL distros. Tested on: Pengwin, Fedora Remix for WSL, Ubuntu, Debian, openSUSE Tumbleweed, ArchWSL, AlmaLinux, Oracle Linux, Alpine, and OpenEuler.
 
 ## wsl-kernel-build
+🛑 Refactored to .NET, still being debugged
 
 ![image](https://github.com/sirredbeard/wslinternals/assets/33820650/6ddbda88-da15-4d5d-896a-b42e44503e8b)
 
@@ -65,7 +68,8 @@ Downloads, builds, and installs the latest kernel release from WSL2-Linux-Kernel
 
 `wsl-kernel-build --revert` - Reverts to the default stock WSL2 kernel.
 
-## wsl-reset
+## wsl-reset 
+✅ Refactored to .NET, building, and tested
 
 A troubleshooting utility that resets the WSL 2 stack to various degrees.
 
@@ -76,6 +80,7 @@ A troubleshooting utility that resets the WSL 2 stack to various degrees.
 `wsl-reset --destructivereset` - Shuts down WSL, restarts the WSL service, **unregisters all WSL distros**, stops the WSL service, uninstalls WSL, and re-installs WSL.
 
 ## wslctl
+🛑 Refactored to .NET, still being debugged
 
 Allows WSL distros to be started on Windows startup. The syntax follows that of systemctl:
 
@@ -86,6 +91,7 @@ Allows WSL distros to be started on Windows startup. The syntax follows that of 
 `wslctl restart pengwin` - Restart Pengwin running in background.
 
 ## sysdistro-wt
+🛑 Refactored to .NET, still being debugged
 
 ![image](https://github.com/sirredbeard/wslinternals/assets/33820650/ea645f9e-af55-47f2-8ccf-5a14aa5e7d3b)
 
