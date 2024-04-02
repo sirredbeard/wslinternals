@@ -4,8 +4,6 @@
 
 ## Status
 
-[![Test Build on Push](https://github.com/sirredbeard/wslinternals/actions/workflows/test-build-on-push.yml/badge.svg?branch=main)](https://github.com/sirredbeard/wslinternals/actions/workflows/test-build-on-push.yml)
-
 [![Build and Upload Artifacts on Release](https://github.com/sirredbeard/wslinternals/actions/workflows/build-on-release.yml/badge.svg)](https://github.com/sirredbeard/wslinternals/actions/workflows/build-on-release.yml)
 
 # List of utilities
@@ -71,11 +69,11 @@ Downloads, builds, and installs the latest kernel release from WSL2-Linux-Kernel
 
 A troubleshooting utility that resets the WSL 2 stack to various degrees.
 
-`wsl-reset -reset` - Shuts down WSL, resets the WSL service, and installs any WSL updates, if available.
+`wsl-reset --reset` - Shuts down WSL and stops WSL services.
 
-`wsl-reset -hardreset` - Shuts down WSL, stops the WSL service, uninstalls WSL, and re-installs WSL.
+`wsl-reset --hardreset` - Shuts down WSL, stops WSL services, uninstalls WSL, and re-installs WSL.
 
-`wsl-reset -destructivereset` - Shuts down WSL, restarts the WSL service, **unregisters all WSL distros**, stops the WSL service, uninstalls WSL, and re-installs WSL.
+`wsl-reset --destructivereset` - Shuts down WSL, restarts the WSL service, **unregisters all WSL distros**, stops the WSL service, uninstalls WSL, and re-installs WSL.
 
 ## wslctl
 
