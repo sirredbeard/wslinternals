@@ -11,12 +11,11 @@
 # List of utilities
 
 * **[list-wsl](https://github.com/sirredbeard/wslinternals#list-wsl)** - Lists detailed info on installed WSL distros
-* **[wsl-dist-update](https://github.com/sirredbeard/wslinternals#wsl-dist-update)** - Update packages in all installed WSL distros, also optionally WSL itself, winget, and Scoop
-* **[wsl-latest-kernel](https://github.com/sirredbeard/wslinternals#wsl-latest-kernel)** - Downloads, builds, and installs the latest kernel from WSL2-Linux-Kernel
-* **[wsl-perf](https://github.com/sirredbeard/wslinternals#wsl-perf)** - Use the [perf tool](https://perf.wiki.kernel.org/index.php/Useful_Links) from the Linux kernel to benchmark and perform traces on the WSL kernel.
+* **[wsl-update](https://github.com/sirredbeard/wslinternals#wsl-dist-update)** - Update packages in all installed WSL distros, also optionally WSL itself, winget, and Scoop
+* **[wsl-kernel-build](https://github.com/sirredbeard/wslinternals#wsl-latest-kernel)** - Downloads, builds, and installs the latest kernel from WSL2-Linux-Kernel
 * **[wsl-reset](https://github.com/sirredbeard/wslinternals#wsl-reset)** - WSL troubleshooting tool, with soft, hard, and destructive resets
 * **[wslctl](https://github.com/sirredbeard/wslinternals#wslctl)** - Start WSL distros on Windows startup, like systemctl but for WSL distros
-* **[sysdistrowt](https://github.com/sirredbeard/wslinternals#sysdistrowt)** - Add the WSL System Distro to Windows Terminal, supports stable, Beta, and Canary builds of Windows Terminal.
+* **[sysdistro-wt](https://github.com/sirredbeard/wslinternals#sysdistrowt)** - Add the WSL System Distro to Windows Terminal, supports stable, Beta, and Canary builds of Windows Terminal.
 
 # Installation
 
@@ -34,11 +33,11 @@ winget:
 
 Provides a list of installed distributions, the official Linux distro name, the Linux distro version, the default user, systemd status, current state, and WSL version.
 
-## wsl-dist-update
+## wsl-update
 
 ![image](https://github.com/sirredbeard/wslinternals/assets/33820650/e1b49c52-c87e-448d-9884-f296165060d6)
 
-`wsl-dist-update` - Update all installed WSL distros.
+`wsl-update` - Update all installed WSL distros.
 
 Options:
 
@@ -52,31 +51,21 @@ Options:
 
 Run package updates on all installed WSL distros. Tested on: Pengwin, Fedora Remix for WSL, Ubuntu, Debian, openSUSE Tumbleweed, ArchWSL, AlmaLinux, Oracle Linux, Alpine, and OpenEuler.
 
-## wsl-latest-kernel
+## wsl-kernel-build
 
 ![image](https://github.com/sirredbeard/wslinternals/assets/33820650/6ddbda88-da15-4d5d-896a-b42e44503e8b)
 
 Downloads, builds, and installs the latest kernel release from WSL2-Linux-Kernel as a custom kernel in WSL2. This is occasionally newer than the version available through `wsl.exe --update`. The kernel is built in and exported from the immutable WSL2 System Distro image (powered by CBL-Mariner aka Azure Linux OS) so that no dependencies have to be installed in your WSL distros and the process is the same regardless of what WSL distros you have installed.
 
-`wsl-latest-kernel` - Run wsl-latest-kernel.
+`wsl-kernel-build` - Run wsl-latest-kernel.
 
-`wsl-latest-kernel -check` - Check for an available kernel updates.
+`wsl-kernel-build -check` - Check for an available kernel updates.
 
-`wsl-latest-kernel -force` - Overwrites the existing custom kernel.
+`wsl-kernel-build -force` - Overwrites the existing custom kernel.
 
-`wsl-latest-kernel -customconfig kernelconfig` - Build the kernel with a custom kernel config file. Expects a Windows path.
+`wsl-kernel-build -customconfig kernelconfig` - Build the kernel with a custom kernel config file. Expects a Windows path.
 
-`wsl-latest-kernel -revert` - Reverts to the default stock WSL2 kernel.
-
-## wsl-perf
-
-Allows use of the Linux kernel [perf tool](https://perf.wiki.kernel.org/index.php/Useful_Links) for benchmarking, traces, and kernel debugging.
-
-On first run, wsl-perf will download and build the perf tool from source and save the staticly linked binary as perf.elf.
-
-wsl-perf will pass any command line arguments to perf.elf, which is run as root in the WSL2 System Distro.
-
-Unlike the other tools here, wsl-perf is built with [Nim](https://nim-lang.org/) due to limitations in argument parsing in PS2EXE. Nim compiles to C and is built by the MSVC C/C++ compiler. This tool was inspired by @buty4649's [project of the same name](https://github.com/buty4649/wsl-perf).
+`wsl-kernel-build -revert` - Reverts to the default stock WSL2 kernel.
 
 ## wsl-reset
 
@@ -98,7 +87,7 @@ Allows WSL distros to be started on Windows startup. The syntax follows that of 
 
 `wslctl restart pengwin` - Restart Pengwin running in background.
 
-## sysdistrowt
+## sysdistro-wt
 
 ![image](https://github.com/sirredbeard/wslinternals/assets/33820650/ea645f9e-af55-47f2-8ccf-5a14aa5e7d3b)
 
