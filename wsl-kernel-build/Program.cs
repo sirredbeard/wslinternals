@@ -15,6 +15,7 @@ public class Program
         var skipClean = args.Contains("-skipClean");
         var revert = args.Contains("-revert");
         var check = args.Contains("-check");
+        var wslConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".wslconfig");
 
         // Check if the script is being run as administrator
         if (!IsAdministrator())
@@ -27,7 +28,6 @@ public class Program
         if (revert)
         {
             Console.WriteLine("Reverting to the default kernel");
-            var wslConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".wslconfig");
             if (File.Exists(wslConfigPath))
             {
                 var wslConfig = File.ReadAllLines(wslConfigPath);
@@ -42,7 +42,6 @@ public class Program
         }
 
         // Check if a custom kernel is already set in .wslconfig and exit if -force is not used
-        var wslConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".wslconfig");
         if (File.Exists(wslConfigPath) && File.ReadLines(wslConfigPath).Any(line => line.StartsWith("kernel=")) && !force)
         {
             Console.Error.WriteLine($"A custom kernel is set in {wslConfigPath}. Use -force to override.");
@@ -174,7 +173,6 @@ public class Program
         }
 
         // Create or update %USERHOME%/.wslconfig to point to the new kernel
-        var wslConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".wslconfig");
         if (!File.Exists(wslConfigPath))
         {
             Console.WriteLine($"Creating {wslConfigPath}");
@@ -239,3 +237,5 @@ public class Program
         var directory = path.Substring(Path.GetPathRoot(path).Length).Replace("\\", "/");
         return $"/mnt/{drive}/{directory}";
     }
+
+}
