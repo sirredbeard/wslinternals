@@ -6,10 +6,10 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        bool winget = Array.Exists(args, arg => arg == "-winget");
-        bool scoop = Array.Exists(args, arg => arg == "-scoop");
-        bool wsl = Array.Exists(args, arg => arg == "-wsl");
-        bool wslpr = Array.Exists(args, arg => arg == "-wslpr");
+        bool winget = Array.Exists(args, arg => arg == "--winget");
+        bool scoop = Array.Exists(args, arg => arg == "--scoop");
+        bool wsl = Array.Exists(args, arg => arg == "--wsl");
+        bool wslpr = Array.Exists(args, arg => arg == "--wslpr");
 
         var distros = GetInstalledDistros();
 
@@ -20,9 +20,7 @@ public class Program
                 continue;
             }
 
-            var output = RunCommand("wsl.exe", $"-d {distro} cat /etc/os-release | Select-String \"^ID=\"");
-            var parts = output.Split('=');
-            var id = parts.Length > 1 ? parts[1] : string.Empty;
+            var id = RunCommand("wsl.exe", $"-d {distro} awk -F= '/^ID=/{{print $2}}' /etc/os-release | tr -d '\"'").Trim();
 
             Console.WriteLine($"Updating {distro}");
 
@@ -30,8 +28,8 @@ public class Program
             {
                 case "debian":
                 case "ubuntu":
-                    RunCommand("wsl.exe", $"-d {distro} -u root -- bash -c \"DEBIAN_FRONTEND=noninteractive apt-get update -y > /dev/null\"");
-                    RunCommand("wsl.exe", $"-d {distro} -u root -- bash -c \"DEBIAN_FRONTEND=noninteractive apt-get upgrade -y > /dev/null\"");
+                    RunCommand("wsl.exe", $"-d {distro} -u root -- bash -c \"DEBIAN_FRONTEND=noninteractive apt-get update -y\"");
+                    RunCommand("wsl.exe", $"-d {distro} -u root -- bash -c \"DEBIAN_FRONTEND=noninteractive apt-get upgrade -y\"");
                     break;
                 case "fedora":
                 case "rhel":
@@ -39,45 +37,49 @@ public class Program
                 case "rocky":
                 case "scientific":
                 case "centos":
-                    RunCommand("wsl.exe", $"-d {distro} -u root dnf update -y > $null");
+                    RunCommand("wsl.exe", $"-d {distro} -u root dnf update -y");
                     break;
                 case "alpine":
-                    RunCommand("wsl.exe", $"-d {distro} -u root apk update > $null");
-                    RunCommand("wsl.exe", $"-d {distro} -u root apk upgrade -y > $null");
+                    RunCommand("wsl.exe", $"-d {distro} -u root apk update");
+                    RunCommand("wsl.exe", $"-d {distro} -u root apk upgrade -y");
                     break;
                 case "suse":
                 case "sles":
-                    RunCommand("wsl.exe", $"-d {distro} -u root zypper dup -y > $null");
+                    RunCommand("wsl.exe", $"-d {distro} -u root zypper dup -y");
                     break;
                 case "arch":
-                    RunCommand("wsl.exe", $"-d {distro} -u root pacman -Sy archlinux-keyring --noconfirm > $null");
-                    RunCommand("wsl.exe", $"-d {distro} -u root pacman-key --init > $null");
-                    RunCommand("wsl.exe", $"-d {distro} -u root pacman -Syu --noconfirm > $null");
+                    RunCommand("wsl.exe", $"-d {distro} -u root pacman -Sy archlinux-keyring --noconfirm");
+                    RunCommand("wsl.exe", $"-d {distro} -u root pacman-key --init");
+                    RunCommand("wsl.exe", $"-d {distro} -u root pacman -Syu --noconfirm");
                     break;
                 case "openEuler":
-                    RunCommand("wsl.exe", $"-d {distro} -u root dnf update -y > $null");
+                    RunCommand("wsl.exe", $"-d {distro} -u root dnf update -y");
                     break;
             }
         }
 
         if (winget)
         {
-            RunCommand("winget", "update --all --include-unknown > $null");
+            Console.WriteLine("Updating Winget");
+            RunCommand("winget", "update --all --include-unknown");
         }
 
         if (scoop)
         {
-            RunCommand("powershell", "-NonInteractive -NoProfile -Command \"scoop update *\" > $null 2>&1");
+            Console.WriteLine("Updating Scoop");
+            RunCommand("powershell", "-NonInteractive -NoProfile -Command scoop update *");
         }
 
         if (wsl)
         {
-            RunCommand("powershell", "-NonInteractive -NoProfile -Command \"wsl.exe --update\" > $null 2>&1");
+            Console.WriteLine("Updating WSL");
+            RunCommand("powershell", "-NonInteractive -NoProfile -Command wsl.exe --update");
         }
 
         if (wslpr)
         {
-            RunCommand("powershell", "-NonInteractive -NoProfile -Command \"wsl.exe --update --pre-release\" > $null 2>&1");
+            Console.WriteLine("Updating WSL Pre-Release");
+            RunCommand("powershell", "-NonInteractive -NoProfile -Command wsl.exe --update --pre-release");
         }
     }
 

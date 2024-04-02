@@ -41,13 +41,13 @@ Provides a list of installed distributions, the official Linux distro name, the 
 
 Options:
 
-    -winget - Also run winget update.
+    --winget - Also run Winget update.
 
-    -scoop - Also run Scoop update.
+    --scoop - Also run Scoop update.
 
-    -wsl - Also update Windows Subsystem for Linux
+    --wsl - Also update Windows Subsystem for Linux.
 
-    -wslpr - Also update Windows Subsystem for Linux Pre-Release
+    --wslpr - Also update Windows Subsystem for Linux Pre-Release.
 
 Run package updates on all installed WSL distros. Tested on: Pengwin, Fedora Remix for WSL, Ubuntu, Debian, openSUSE Tumbleweed, ArchWSL, AlmaLinux, Oracle Linux, Alpine, and OpenEuler.
 
