@@ -64,7 +64,7 @@ public class Program
         Console.WriteLine($"Current installed WSL kernel version is {wslKernelVersion}");
 
         // Detect the latest release of WSL2-Linux-Kernel on GitHub
-        var latestRelease = JObject.Parse(new WebClient().DownloadString("https://api.github.com/repos/microsoft/WSL2-Linux-Kernel/releases/latest"));
+        var latestRelease = JObject.Parse(new CustomWebClient().DownloadString("https://api.github.com/repos/microsoft/WSL2-Linux-Kernel/releases/latest"));
 
         // Display the latest release version
         Console.WriteLine($"Latest WSL release version on GitHub is {latestRelease["tag_name"].ToString().Replace("linux-msft-wsl-", "")}");
@@ -152,7 +152,7 @@ public class Program
         // Copy the built kernel to %USERHOME%
         Console.WriteLine($"Copying the built kernel to {Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}");
         if (architecture == "x86_64")
-        {
+        { 
             RunCommand("wsl.exe", $"--system --user root sh -c \"cp /root/WSL2-Linux-Kernel-*/arch/x86/boot/bzImage {userProfileWSL}/wsl2kernel\"");
         }
         else if (architecture == "aarch64")
@@ -233,9 +233,22 @@ public class Program
 
     private static string ConvertPathToWSL(string path)
     {
-        var drive = Path.GetPathRoot(path).Replace("\\", "").ToLower();
+        var drive = Path.GetPathRoot(path).Replace("\\", "").ToLower().Replace(":", "");
         var directory = path.Substring(Path.GetPathRoot(path).Length).Replace("\\", "/");
         return $"/mnt/{drive}/{directory}";
     }
+
+    public class CustomWebClient : WebClient
+{
+    protected override WebRequest GetWebRequest(Uri address)
+    {
+        var request = base.GetWebRequest(address);
+        if (request is HttpWebRequest httpRequest)
+        {
+            httpRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0";
+        }
+        return request;
+    }
+}
 
 }
