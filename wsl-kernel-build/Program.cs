@@ -4,17 +4,19 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using Newtonsoft.Json.Linq;
+using System.Net.Http;
+using System.Net.Http;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         // Parse command line arguments
-        var force = args.Contains("-force");
-        var customConfig = args.Contains("-customConfig") ? args[Array.IndexOf(args, "-customConfig") + 1] : null;
-        var skipClean = args.Contains("-skipClean");
-        var revert = args.Contains("-revert");
-        var check = args.Contains("-check");
+        var force = args.Contains("--force");
+        var customConfig = args.Contains("--customConfig") ? args[Array.IndexOf(args, "-customConfig") + 1] : null;
+        var skipClean = args.Contains("--skipClean");
+        var revert = args.Contains("--revert");
+        var check = args.Contains("--check");
         var wslConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".wslconfig");
 
         // Check if the script is being run as administrator
@@ -44,7 +46,7 @@ public class Program
         // Check if a custom kernel is already set in .wslconfig and exit if -force is not used
         if (File.Exists(wslConfigPath) && File.ReadLines(wslConfigPath).Any(line => line.StartsWith("kernel=")) && !force)
         {
-            Console.Error.WriteLine($"A custom kernel is set in {wslConfigPath}. Use -force to override.");
+            Console.Error.WriteLine($"A custom kernel is set in {wslConfigPath}. Use --force to override.");
             Environment.Exit(1);
         }
 
@@ -64,7 +66,7 @@ public class Program
         Console.WriteLine($"Current installed WSL kernel version is {wslKernelVersion}");
 
         // Detect the latest release of WSL2-Linux-Kernel on GitHub
-        var latestRelease = JObject.Parse(new CustomWebClient().DownloadString("https://api.github.com/repos/microsoft/WSL2-Linux-Kernel/releases/latest"));
+        var latestRelease = JObject.Parse(await CustomHttpClient.DownloadStringAsync("https://api.github.com/repos/microsoft/WSL2-Linux-Kernel/releases/latest"));
 
         // Display the latest release version
         Console.WriteLine($"Latest WSL release version on GitHub is {latestRelease["tag_name"].ToString().Replace("linux-msft-wsl-", "")}");
@@ -238,17 +240,19 @@ public class Program
         return $"/mnt/{drive}/{directory}";
     }
 
-    public class CustomWebClient : WebClient
-{
-    protected override WebRequest GetWebRequest(Uri address)
+    public class CustomHttpClient
     {
-        var request = base.GetWebRequest(address);
-        if (request is HttpWebRequest httpRequest)
+        private static readonly HttpClient client = new HttpClient();
+
+        static CustomHttpClient()
         {
-            httpRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0";
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0");
         }
-        return request;
+
+        public static async Task<string> DownloadStringAsync(string url)
+        {
+            return await client.GetStringAsync(url);
+        }
     }
-}
 
 }

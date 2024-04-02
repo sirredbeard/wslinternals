@@ -59,13 +59,13 @@ Downloads, builds, and installs the latest kernel release from WSL2-Linux-Kernel
 
 `wsl-kernel-build` - Run wsl-latest-kernel.
 
-`wsl-kernel-build -check` - Check for an available kernel updates.
+`wsl-kernel-build --check` - Check for an available kernel updates.
 
-`wsl-kernel-build -force` - Overwrites the existing custom kernel.
+`wsl-kernel-build --force` - Overwrites the existing custom kernel.
 
-`wsl-kernel-build -customconfig kernelconfig` - Build the kernel with a custom kernel config file. Expects a Windows path.
+`wsl-kernel-build --customconfig kernelconfig` - Build the kernel with a custom kernel config file. Expects a Windows path.
 
-`wsl-kernel-build -revert` - Reverts to the default stock WSL2 kernel.
+`wsl-kernel-build --revert` - Reverts to the default stock WSL2 kernel.
 
 ## wsl-reset
 
