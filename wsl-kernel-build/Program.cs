@@ -99,7 +99,7 @@ public class Program
 
         // Install kernel build dependencies in the WSL system distro
         Console.WriteLine("Installing kernel build dependencies in the WSL system distro");
-        RunCommand("wsl.exe", "--system --user root tdnf install -y gcc glibc-devel kernel-headers make gawk tar bc perl python3 bison flex dwarves binutils diffutils elfutils-libelf-devel zlib-devel openssl-devel");
+        RunCommand("wsl.exe", "--system --user root tdnf install -y gcc glibc-devel kernel-headers make gawk tar bc perl python3 bison flex dwarves binutils diffutils elfutils-libelf-devel zlib-devel openssl-devel cpio");
 
         // Form the kernel tar URL
         var downloadUrl = $"https://github.com/microsoft/WSL2-Linux-Kernel/archive/refs/tags/{latestRelease["tag_name"]}.tar.gz";
